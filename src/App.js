@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-function App() {
+function BasicExample() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Product catalog</Link>
+          </li>
+          <li>
+            <Link to="/basket-summary">Basket summary</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        <Route exact path="/" component={ProductCatalog} />
+        <Route path="/basket-summary" component={BasketSummary} />
+      </div>
+    </Router>
+  );
+}
+
+function ProductCatalog() {
+  return (
+    <div>
+      <h2>Product Catalog</h2>
     </div>
   );
 }
 
-export default App;
+function BasketSummary () {
+  return (
+    <div>
+      <h2>Basket Summary</h2>
+    </div>
+  );
+}
+
+export default BasicExample;
