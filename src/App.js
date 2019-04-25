@@ -18,7 +18,7 @@ class App extends React.Component {
     return (
       <Router>
         <Header />
-        <Route render={(props) => <ProductCatalog products={this.state.products} />} exact path="/" />
+        <Route render={(props) => <ProductCatalog  categories={this.state.categories} products={this.state.products} />} exact path="/" />
         <Route path="/basket-summary" component={BasketSummary} />
       </Router>
     );
