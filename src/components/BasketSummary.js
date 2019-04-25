@@ -15,6 +15,7 @@ class BasketSummary extends React.Component {
 
     return `${price} * ${quantity} = ${price * quantity}`;
   }
+
   getTotaPrice() {
     const { basket } = this.props;
     let total = 0;
@@ -28,6 +29,7 @@ class BasketSummary extends React.Component {
 
     return total;
   }
+
   calculateRecevingDate(shippingDay) {
     const date = calcuateDeliverDate(shippingDay);
 
@@ -66,7 +68,9 @@ class BasketSummary extends React.Component {
 
   headerMessage() {
     const { basket } = this.props;
-    return basket.length ? `Cart Total Price $${this.state.totalPrice}` : "Your cart is empty";
+    return basket.length
+      ? `Cart Total Price $${this.state.totalPrice}`
+      : "Your cart is empty";
   }
 
   render() {
@@ -89,7 +93,8 @@ class BasketSummary extends React.Component {
                   {item.minQty ? parseInt(item.minQty) : "No limit"}
                 </p>
                 <p className="mb-0">
-                  <strong>Max Quantity:</strong> {parseInt(item.maxQty) ? item.maxQty : "No limit"}
+                  <strong>Max Quantity:</strong>{" "}
+                  {parseInt(item.maxQty) ? item.maxQty : "No limit"}
                 </p>
                 <p className="mb-0">
                   <strong>Stock:</strong> {item.stock}
@@ -103,12 +108,14 @@ class BasketSummary extends React.Component {
                 </p>
                 <p>
                   <strong>Delivery date: </strong>
-                  {formatDate(this.calculateRecevingDate(item.shippingDay).date)}
+                  {formatDate(
+                    this.calculateRecevingDate(item.shippingDay).date
+                  )}
                 </p>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
                   <Form.Control
-                    style={{maxWidth: "150px"}}
+                    style={{ maxWidth: "150px" }}
                     onChange={e => updateProductQuantity(item, e.target.value)}
                     as="select"
                   >
@@ -126,23 +133,22 @@ class BasketSummary extends React.Component {
               </Card.Body>
             </Card>
           ))}
-            <Card.Body>
-          {this.state.expectedDelivery && <div>
-            <h3>
-              Final delivery date for all products:
-            </h3>
-            <p>
-              {formatDate(this.state.expectedDelivery.date)}
-            </p>
-            <h3>Total Price</h3>
-            <p>${this.getTotaPrice()}</p>
-          </div>}
+          <Card.Body>
+            {this.state.expectedDelivery && (
+              <div>
+                <h3>Final delivery date for all products:</h3>
+                <p>{formatDate(this.state.expectedDelivery.date)}</p>
+                <h3>Total Price</h3>
+                <p>${this.getTotaPrice()}</p>
+              </div>
+            )}
           </Card.Body>
         </Card>
       </Container>
     );
   }
 }
+
 BasketSummary.propTypes = {
   basket: PropTypes.array.isRequired,
   removeFromBasket: PropTypes.func.isRequired,

@@ -8,7 +8,11 @@ function Products({ products, addToBasket, removeFromBasket }) {
     <Row>
       {products.map(product => (
         <Col className="mt-3" sm={6} md={4} key={product.id}>
-          <Product   product={product} remove={removeFromBasket} add={addToBasket}/>
+          <Product
+            product={product}
+            remove={removeFromBasket}
+            add={addToBasket}
+          />
         </Col>
       ))}
     </Row>

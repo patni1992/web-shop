@@ -7,7 +7,7 @@ function Product({ product, add, remove }) {
     <Card key={product.id}>
       <Card.Body>
         <Card.Title>
-          {product.name.substring(0,20)} <small>{product.id}</small>
+          {product.name.substring(0, 20)} <small>{product.id}</small>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
           {product.categoryName}

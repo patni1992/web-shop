@@ -62,7 +62,7 @@ class App extends React.Component {
     } catch (err) {
       this.setState({
         error: "Could not load data"
-      })
+      });
     }
   }
   componentDidMount() {
