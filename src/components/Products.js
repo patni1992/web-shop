@@ -7,8 +7,8 @@ function Products({ products, addToBasket, removeFromBasket }) {
   return (
     <Row>
       {products.map(product => (
-        <Col xs={4} key={product.id}>
-          <Product product={product} remove={removeFromBasket} add={addToBasket}/>
+        <Col className="mt-3" sm={6} md={4} key={product.id}>
+          <Product   product={product} remove={removeFromBasket} add={addToBasket}/>
         </Col>
       ))}
     </Row>
