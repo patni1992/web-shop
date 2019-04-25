@@ -49,7 +49,7 @@ class App extends React.Component {
           exact
           path="/"
         />
-        <Route path="/basket-summary" component={BasketSummary} />
+        <Route render={(props) => <BasketSummary basket={Object.values(this.state.basket)} /> } path="/basket-summary" />
       </Router>
     );
   }
