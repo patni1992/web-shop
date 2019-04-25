@@ -4,6 +4,9 @@ import ProductCatalog from "./components/ProductCatalog";
 import BasketSummary from "./components/BasketSummary";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 class App extends React.Component {
   state = {
@@ -13,11 +16,21 @@ class App extends React.Component {
   };
   addToBasket = (product) => {
     this.setState({ basket: { ...this.state.basket, [product.id]: { ...product, quantity: product.minQty } } })
+    toast.success(<div><strong>Added product #id {product.id}</strong> <p>edit amount in basket summary</p></div>, {
+
+    });
+
   }
   removeFromToBasket = (product) => {
-    const newBasket = { ...this.state.basket }
-    delete newBasket[product.id]
-    this.setState({ basket: newBasket })
+    if (this.state.basket[product.id]) {
+      const newBasket = { ...this.state.basket }
+      
+      delete newBasket[product.id]
+      this.setState({ basket: newBasket })
+      toast.error(`Removed product #id ${product.id}`, {
+      });
+    }
+
   }
   componentDidMount() {
     axios.get(`products.json`).then(res => this.setState({ products: res.data }));
@@ -26,6 +39,7 @@ class App extends React.Component {
   render() {
     return (
       <Router>
+        <ToastContainer />
         <Header />
         <Route render={(props) => <ProductCatalog
           removeFromToBasket={this.removeFromToBasket}
