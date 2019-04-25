@@ -3,6 +3,23 @@ import { Container, Card, Button, Form } from "react-bootstrap";
 import PropTypes from 'prop-types';
 
 class BasketSummary extends React.Component {
+ getProductPriceLabel(product){
+   const price = parseInt(product.price);
+   const quantity = parseInt(product.quantity)  || 1;
+
+  return `${price} * ${quantity} = ${price * quantity}`;
+ }
+  getTotaPrice(){
+    const {basket} = this.props;
+    let total = 0;
+    
+    if(!basket.length) {
+      return 0;
+    }
+    basket.forEach(item => total += parseInt(item.quantity) * parseInt(item.price))
+
+    return total;
+  }
   createSelectInput(value, min, max, stock) {
     const options = [];
     min = parseInt(min);
@@ -12,19 +29,25 @@ class BasketSummary extends React.Component {
     if (max === 0) {
       max = stock;
     }
+
+    if(min === 0) {
+      min = 1;
+    }
+
     for (let i = min; i <= max; i++) {
       options.push(<option>{i}</option>);
     }
-    
+
     return options;
   }
+
   render() {
-    const { basket } = this.props;
+    const { basket, removeFromBasket, updateProductQuantity } = this.props;
     return (
       <Container>
         <h2>Basket summary</h2>
         <Card>
-          <Card.Header>Cart</Card.Header>
+          <Card.Header>Cart Total Price ${this.getTotaPrice()}</Card.Header>
           {basket.map(item => (
             <Card>
               <Card.Body>
@@ -46,11 +69,11 @@ class BasketSummary extends React.Component {
                   <strong>Price:</strong> ${item.price}
                 </p>
                 <p >
-                  <strong>Total price:</strong> {item.quantity} * {item.price} = ${parseInt(item.quantity) * parseInt(item.price)}
+                  <strong>Total price:</strong> {this.getProductPriceLabel(item)}
                 </p>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
-                  <Form.Control as="select">
+                  <Form.Control onChange={e =>  updateProductQuantity(item, e.target.value)} as="select">
                     {this.createSelectInput(
                       item.quantity,
                       item.minQty,
@@ -59,7 +82,7 @@ class BasketSummary extends React.Component {
                     )}
                   </Form.Control>
                 </Form.Group>
-                <Button variant="danger">Remove</Button>
+                <Button onClick={() => removeFromBasket(item,)} variant="danger">Remove</Button>
               </Card.Body>
               <hr />
             </Card>
@@ -70,7 +93,9 @@ class BasketSummary extends React.Component {
   }
 }
 BasketSummary.propTypes = {
-  Basket: PropTypes.array.isRequired,
+  basket: PropTypes.array.isRequired,
+  removeFromBasket: PropTypes.func.isRequired,
+  updateProductQuantity: PropTypes.func.isRequired
 }
 
 
