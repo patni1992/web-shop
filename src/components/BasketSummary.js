@@ -85,7 +85,7 @@ class BasketSummary extends React.Component {
                   {item.shippingDay} days
                 </p>
                 <p className="mb-0">
-                  <strong>Min quantity:</strong>
+                  <strong>Min quantity: </strong>
                   {item.minQty}
                 </p>
                 <p className="mb-0">
@@ -98,11 +98,11 @@ class BasketSummary extends React.Component {
                   <strong>Price:</strong> ${item.price}
                 </p>
                 <p className="mb-0">
-                  <strong>Total price:</strong>
+                  <strong>Total price: </strong>
                   {this.getProductPriceLabel(item)}
                 </p>
                 <p>
-                  <strong>Delivery date:</strong>
+                  <strong>Delivery date: </strong>
                   {formatDate(this.calculateRecevingDate(item.shippingDay).date)}
                 </p>
                 <Form.Group>
