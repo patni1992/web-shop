@@ -18,7 +18,7 @@ class ProductCatalog extends React.Component {
   render() {
     const {addToBasket, removeFromBasket} = this.props;
     return (
-      <Container>
+      <Container className="mt-3">
       <h2>Product Catalog</h2>
       <Products  removeFromBasket={removeFromBasket} addToBasket={addToBasket} products={this.applyCategoryToProducts()} />
     </Container>

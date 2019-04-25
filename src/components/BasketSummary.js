@@ -1,11 +1,12 @@
 import React from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { calcuateDeliverDate } from "../helpers";
+import { calcuateDeliverDate, formatDate } from "../helpers";
 
 class BasketSummary extends React.Component {
   state = {
-    expectedDelivery: null
+    expectedDelivery: null,
+    totalPrice: 0
   };
 
   getProductPriceLabel(product) {
@@ -65,13 +66,13 @@ class BasketSummary extends React.Component {
 
   headerMessage() {
     const { basket } = this.props;
-    return basket.length ? `Cart Total Price \$${this.getTotaPrice()}` : "Your cart is empty";
+    return basket.length ? `Cart Total Price $${this.state.totalPrice}` : "Your cart is empty";
   }
 
   render() {
     const { basket, removeFromBasket, updateProductQuantity } = this.props;
     return (
-      <Container>
+      <Container className="mt-3">
         <h2>Basket summary</h2>
         <Card>
           <Card.Header> {this.headerMessage()}</Card.Header>
@@ -102,11 +103,12 @@ class BasketSummary extends React.Component {
                 </p>
                 <p>
                   <strong>Delivery date:</strong>
-                  {this.calculateRecevingDate(item.shippingDay).date.toString()}
+                  {formatDate(this.calculateRecevingDate(item.shippingDay).date)}
                 </p>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
                   <Form.Control
+                    style={{maxWidth: "150px"}}
                     onChange={e => updateProductQuantity(item, e.target.value)}
                     as="select"
                   >
@@ -122,18 +124,20 @@ class BasketSummary extends React.Component {
                   Remove
                 </Button>
               </Card.Body>
-              <hr />
             </Card>
           ))}
-
+            <Card.Body>
           {this.state.expectedDelivery && <div>
-            <h2>
-              Final delivery date for all product:
-            </h2>
+            <h3>
+              Final delivery date for all products:
+            </h3>
             <p>
-              {this.state.expectedDelivery.date.toString()}
+              {formatDate(this.state.expectedDelivery.date)}
             </p>
+            <h3>Total Price</h3>
+            <p>${this.getTotaPrice()}</p>
           </div>}
+          </Card.Body>
         </Card>
       </Container>
     );
