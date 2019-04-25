@@ -16,10 +16,11 @@ class ProductCatalog extends React.Component {
   }
 
   render() {
+    const {addToBasket, removeFromToBasket} = this.props;
     return (
       <Container>
       <h2>Product Catalog</h2>
-      <Products products={this.applyCategoryToProducts()} />
+      <Products  removeFromToBasket={removeFromToBasket} addToBasket={addToBasket} products={this.applyCategoryToProducts()} />
     </Container>
     )
   }
@@ -28,6 +29,8 @@ class ProductCatalog extends React.Component {
 ProductCatalog.propTypes = {
   products: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
+  addToBasket: PropTypes.func.isRequired,
+  removeFromToBasket: PropTypes.func.isRequired
 }
 
 export default ProductCatalog;
