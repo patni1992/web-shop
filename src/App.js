@@ -17,11 +17,9 @@ class App extends React.Component {
   addToBasket = (product) => {
     this.setState({ basket: { ...this.state.basket, [product.id]: { ...product, quantity: product.minQty } } })
     toast.success(<div><strong>Added product #id {product.id}</strong> <p>edit amount in basket summary</p></div>, {
-
     });
-
   }
-  removeFromToBasket = (product) => {
+  removeFromBasket = (product) => {
     if (this.state.basket[product.id]) {
       const newBasket = { ...this.state.basket }
       
@@ -30,7 +28,12 @@ class App extends React.Component {
       toast.error(`Removed product #id ${product.id}`, {
       });
     }
-
+  }
+  updateProductQuantity = (product, quantity) => {
+      const updatedProduct = {...product};
+      updatedProduct.quantity = quantity;
+      
+      this.setState({ basket: { ...this.state.basket, [product.id]: updatedProduct  } })
   }
   componentDidMount() {
     axios.get(`products.json`).then(res => this.setState({ products: res.data }));
@@ -42,14 +45,14 @@ class App extends React.Component {
         <ToastContainer />
         <Header />
         <Route render={(props) => <ProductCatalog
-          removeFromToBasket={this.removeFromToBasket}
+          removeFromBasket={this.removeFromBasket}
           addToBasket={this.addToBasket}
           categories={this.state.categories}
           products={this.state.products} />}
           exact
           path="/"
         />
-        <Route render={(props) => <BasketSummary basket={Object.values(this.state.basket)} /> } path="/basket-summary" />
+        <Route render={(props) => <BasketSummary  updateProductQuantity={this.updateProductQuantity} removeFromBasket={this.removeFromBasket} basket={Object.values(this.state.basket)} /> } path="/basket-summary" />
       </Router>
     );
   }
