@@ -7,29 +7,18 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class App extends React.Component {
   state = {
-    products: []
+    products: [],
+    categories: []
   };
   componentDidMount() {
-    axios.get(`products.json`).then(res => {
-      console.log("products");
-      this.setState({
-        products: res.data
-      });
-      console.log(res);
-    });
-
-    axios.get(`categories.json`).then(res => {
-      console.log("categories");
-      console.log(res);
-      
-      console.log(this.list_to_tree(res.data));
-    });
+    axios.get(`products.json`).then(res => this.setState({ products: res.data }));
+    axios.get(`categories.json`).then(res =>this.setState({ categories: res.data }));
   }
   render() {
     return (
       <Router>
         <Header />
-        <Route exact path="/" component={ProductCatalog} />
+        <Route render={(props) => <ProductCatalog products={this.state.products} />} exact path="/" />
         <Route path="/basket-summary" component={BasketSummary} />
       </Router>
     );
