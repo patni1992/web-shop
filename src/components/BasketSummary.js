@@ -5,8 +5,7 @@ import { calcuateDeliverDate, formatDate } from "../helpers";
 
 class BasketSummary extends React.Component {
   state = {
-    expectedDelivery: null,
-    totalPrice: 0
+    expectedDelivery: null
   };
 
   getProductPriceLabel(product) {
@@ -30,19 +29,19 @@ class BasketSummary extends React.Component {
     return total;
   }
 
-  calculateRecevingDate(shippingDay) {
-    const date = calcuateDeliverDate(shippingDay);
+  totalReceivingDate() {
+    const { basket } = this.props;
+    let longestWaitDate = null;
+    let date;
 
-    if (
-      !this.state.expectedDelivery ||
-      date.countDays > this.state.expectedDelivery.contDays
-    ) {
-      this.setState({
-        expectedDelivery: date
-      });
-    }
+    basket.forEach(item => {
+      date = calcuateDeliverDate(item.shippingDay);
+      if (!longestWaitDate || longestWaitDate.countDays < date.countDays) {
+        longestWaitDate = date;
+      }
+    });
 
-    return date;
+    return longestWaitDate;
   }
 
   createSelectInput(value, min, max, stock) {
@@ -60,7 +59,7 @@ class BasketSummary extends React.Component {
     }
 
     for (let i = min; i <= max; i++) {
-      options.push(<option>{i}</option>);
+      options.push(<option key={i}>{i}</option>);
     }
 
     return options;
@@ -69,7 +68,7 @@ class BasketSummary extends React.Component {
   headerMessage() {
     const { basket } = this.props;
     return basket.length
-      ? `Cart Total Price $${this.state.totalPrice}`
+      ? `Cart Total Price $${this.getTotaPrice()}`
       : "Your cart is empty";
   }
 
@@ -81,7 +80,7 @@ class BasketSummary extends React.Component {
         <Card>
           <Card.Header> {this.headerMessage()}</Card.Header>
           {basket.map(item => (
-            <Card>
+            <Card key={item.id}>
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>
                 <p className="mb-0">
@@ -108,9 +107,7 @@ class BasketSummary extends React.Component {
                 </p>
                 <p>
                   <strong>Delivery date: </strong>
-                  {formatDate(
-                    this.calculateRecevingDate(item.shippingDay).date
-                  )}
+                  {formatDate(calcuateDeliverDate(item.shippingDay).date)}
                 </p>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
@@ -134,10 +131,10 @@ class BasketSummary extends React.Component {
             </Card>
           ))}
           <Card.Body>
-            {this.state.expectedDelivery && (
+            {basket.length > 0 && (
               <div>
                 <h3>Final delivery date for all products:</h3>
-                <p>{formatDate(this.state.expectedDelivery.date)}</p>
+                <p>{formatDate(this.totalReceivingDate().date)}</p>
                 <h3>Total Price</h3>
                 <p>${this.getTotaPrice()}</p>
               </div>

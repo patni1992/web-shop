@@ -31,7 +31,7 @@ export function calcuateDeliverDate(shipDays) {
 
   return {
     date: finalDate,
-    countDays: daysBetween(today, finalDate)
+    countDays: daysBetween(new Date(), finalDate)
   };
 }
 
