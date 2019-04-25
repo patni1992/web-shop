@@ -1,0 +1,32 @@
+[
+    {
+      "id": "1",
+      "parentCategory": "1",
+      "name": "Nespresso"
+    },
+    {
+      "id": "1314",
+      "parentCategory": "2830",
+      "name": "domestic appliances",
+      "description": "Objects that are used in the kitchen or around the house, such as containers."
+    },
+    {
+      "id": "1315",
+      "parentCategory": "1314",
+      "name": "small kitchen appliances",
+      "description": "Various appliances such as tin openers and corkscrews."
+    },
+    {
+      "id": "1320",
+      "parentCategory": "1315",
+      "name": "coffee makers",
+      "description": "Machine used to make coffee."
+    },
+    {
+      "id": "2830",
+      "parentCategory": "1",
+      "name": "home",
+      "description": ""
+    }
+  ]
+  
