@@ -86,10 +86,10 @@ class BasketSummary extends React.Component {
                 </p>
                 <p className="mb-0">
                   <strong>Min quantity: </strong>
-                  {item.minQty}
+                  {item.minQty ? parseInt(item.minQty) : "No limit"}
                 </p>
                 <p className="mb-0">
-                  <strong>Max Quantity:</strong> {item.maxQty}
+                  <strong>Max Quantity:</strong> {parseInt(item.maxQty) ? item.maxQty : "No limit"}
                 </p>
                 <p className="mb-0">
                   <strong>Stock:</strong> {item.stock}
