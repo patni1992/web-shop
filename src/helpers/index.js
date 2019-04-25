@@ -30,3 +30,8 @@ export function calcuateDeliverDate(shipDays) {
         countDays: daysBetween(today, finalDate)
     }
 }
+
+export function formatDate(date) {
+    const monthname = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return monthname[date.getMonth()]+" "+date.getDate()+", "+date.getFullYear();
+}
