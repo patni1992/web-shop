@@ -63,13 +63,18 @@ class BasketSummary extends React.Component {
     return options;
   }
 
+  headerMessage() {
+    const { basket } = this.props;
+    return basket.length ? `Cart Total Price \$${this.getTotaPrice()}` : "Your cart is empty";
+  }
+
   render() {
     const { basket, removeFromBasket, updateProductQuantity } = this.props;
     return (
       <Container>
         <h2>Basket summary</h2>
         <Card>
-          <Card.Header>Cart Total Price ${this.getTotaPrice()}</Card.Header>
+          <Card.Header> {this.headerMessage()}</Card.Header>
           {basket.map(item => (
             <Card>
               <Card.Body>
