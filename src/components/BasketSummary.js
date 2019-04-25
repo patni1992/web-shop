@@ -1,25 +1,47 @@
 import React from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { calcuateDeliverDate } from "../helpers";
 
 class BasketSummary extends React.Component {
- getProductPriceLabel(product){
-   const price = parseInt(product.price);
-   const quantity = parseInt(product.quantity)  || 1;
+  state = {
+    expectedDelivery: null
+  };
 
-  return `${price} * ${quantity} = ${price * quantity}`;
- }
-  getTotaPrice(){
-    const {basket} = this.props;
+  getProductPriceLabel(product) {
+    const price = parseInt(product.price);
+    const quantity = parseInt(product.quantity) || 1;
+
+    return `${price} * ${quantity} = ${price * quantity}`;
+  }
+  getTotaPrice() {
+    const { basket } = this.props;
     let total = 0;
-    
-    if(!basket.length) {
+
+    if (!basket.length) {
       return 0;
     }
-    basket.forEach(item => total += parseInt(item.quantity) * parseInt(item.price))
+    basket.forEach(
+      item => (total += parseInt(item.quantity) * parseInt(item.price))
+    );
 
     return total;
   }
+  calculateRecevingDate(shippingDay) {
+    const date = calcuateDeliverDate(shippingDay);
+
+    if (
+      !this.state.expectedDelivery ||
+      date.countDays > this.state.expectedDelivery.contDays
+    ) {
+      this.setState({
+        expectedDelivery: date
+      });
+    }
+
+    return date;
+  }
+
   createSelectInput(value, min, max, stock) {
     const options = [];
     min = parseInt(min);
@@ -30,7 +52,7 @@ class BasketSummary extends React.Component {
       max = stock;
     }
 
-    if(min === 0) {
+    if (min === 0) {
       min = 1;
     }
 
@@ -57,7 +79,8 @@ class BasketSummary extends React.Component {
                   {item.shippingDay} days
                 </p>
                 <p className="mb-0">
-                  <strong>Min quantity:</strong>{item.minQty}
+                  <strong>Min quantity:</strong>
+                  {item.minQty}
                 </p>
                 <p className="mb-0">
                   <strong>Max Quantity:</strong> {item.maxQty}
@@ -68,12 +91,20 @@ class BasketSummary extends React.Component {
                 <p className="mb-0">
                   <strong>Price:</strong> ${item.price}
                 </p>
-                <p >
-                  <strong>Total price:</strong> {this.getProductPriceLabel(item)}
+                <p className="mb-0">
+                  <strong>Total price:</strong>
+                  {this.getProductPriceLabel(item)}
+                </p>
+                <p>
+                  <strong>Delivery date:</strong>
+                  {this.calculateRecevingDate(item.shippingDay).date.toString()}
                 </p>
                 <Form.Group>
                   <Form.Label>Quantity</Form.Label>
-                  <Form.Control onChange={e =>  updateProductQuantity(item, e.target.value)} as="select">
+                  <Form.Control
+                    onChange={e => updateProductQuantity(item, e.target.value)}
+                    as="select"
+                  >
                     {this.createSelectInput(
                       item.quantity,
                       item.minQty,
@@ -82,11 +113,22 @@ class BasketSummary extends React.Component {
                     )}
                   </Form.Control>
                 </Form.Group>
-                <Button onClick={() => removeFromBasket(item,)} variant="danger">Remove</Button>
+                <Button onClick={() => removeFromBasket(item)} variant="danger">
+                  Remove
+                </Button>
               </Card.Body>
               <hr />
             </Card>
           ))}
+
+          {this.state.expectedDelivery && <div>
+            <h2>
+              Final delivery date for all product:
+            </h2>
+            <p>
+              {this.state.expectedDelivery.date.toString()}
+            </p>
+          </div>}
         </Card>
       </Container>
     );
@@ -96,7 +138,6 @@ BasketSummary.propTypes = {
   basket: PropTypes.array.isRequired,
   removeFromBasket: PropTypes.func.isRequired,
   updateProductQuantity: PropTypes.func.isRequired
-}
-
+};
 
 export default BasketSummary;
