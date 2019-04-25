@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import Products from "./Products";
 
 class ProductCatalog extends React.Component {
@@ -18,16 +18,29 @@ class ProductCatalog extends React.Component {
     }));
   }
 
+  displayData() {
+    const { addToBasket, removeFromBasket, loading } = this.props;
+    return loading ? (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <Spinner
+          animation="border"
+          style={{ height: "150px", width: "150px" }}
+        />{" "}
+      </div>
+    ) : (
+      <Products
+        removeFromBasket={removeFromBasket}
+        addToBasket={addToBasket}
+        products={this.applyCategoryToProducts()}
+      />
+    );
+  }
+
   render() {
-    const { addToBasket, removeFromBasket } = this.props;
     return (
       <Container className="mt-3">
         <h2>Product Catalog</h2>
-        <Products
-          removeFromBasket={removeFromBasket}
-          addToBasket={addToBasket}
-          products={this.applyCategoryToProducts()}
-        />
+        {this.displayData()}
       </Container>
     );
   }

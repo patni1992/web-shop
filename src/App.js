@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 class App extends React.Component {
   state = {
     error: null,
+    loading: false,
     basket: {},
     products: [],
     categories: []
@@ -50,6 +51,9 @@ class App extends React.Component {
 
   async getData() {
     const response = [];
+    this.setState({
+      loading: true
+    });
     try {
       response[0] = await axios.get(`products.json`);
       response[1] = await axios.get(`categories.json`);
@@ -62,6 +66,10 @@ class App extends React.Component {
     } catch (err) {
       this.setState({
         error: "Could not load data"
+      });
+    } finally {
+      this.setState({
+        loading: false
       });
     }
   }
@@ -83,6 +91,7 @@ class App extends React.Component {
               addToBasket={this.addToBasket}
               categories={this.state.categories}
               products={this.state.products}
+              loading={this.state.loading}
             />
           )}
           exact
