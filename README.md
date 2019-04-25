@@ -1,6 +1,6 @@
 ### To start development
 
-`Clone this respo`
+`clone this respo`
 
 `npm install`
 
