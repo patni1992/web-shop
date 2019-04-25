@@ -3,18 +3,31 @@ import PropTypes from 'prop-types';
 import { Container } from "react-bootstrap"
 import Products from "./Products";
 
-function ProductCatalog({products}) {
-  return (
-    <Container>
+class ProductCatalog extends React.Component {
+  applyCategoryToProducts(){
+    const {categories, products} = this.props;
+    const categoriesAsMap = {};
+
+    categories.forEach(category => {
+      categoriesAsMap[category.id] = category.name
+    });
+    
+    return products.map(product=> ({...product, categoryName: categoriesAsMap[product.category]}))
+  }
+
+  render() {
+    return (
+      <Container>
       <h2>Product Catalog</h2>
-      <Products products={products} />
+      <Products products={this.applyCategoryToProducts()} />
     </Container>
-  );
+    )
+  }
 }
 
 ProductCatalog.propTypes = {
   products: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
 }
-
 
 export default ProductCatalog;
